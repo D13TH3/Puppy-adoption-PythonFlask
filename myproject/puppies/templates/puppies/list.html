@@ -3,11 +3,19 @@
 
 <div class="jumbotron">
   <h1>Here is a list of all adopted puppies: </h1>
-    <ul>
-      {% for pup in puppies %}
-        <li>{{pup}}</li>
-      {% endfor %}
-    </ul>
+  <ul>
+    {% for pup in puppies %}
+      <li>
+        ID: {{ pup.id }} -
+        Name: {{ pup.name }} -
+        {% if pup.owner %}
+          Owner: {{ pup.owner.name }}
+        {% else %}
+          No owner assigned
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
 </div>
 
 {% endblock %}

@@ -29,18 +29,24 @@ def list():
     return render_template('list.html',puppies=puppies)
 
 
-@puppies_blueprint.route('/delete', methods=["GET","POST"])
+@puppies_blueprint.route('/delete', methods=["GET", "POST"])
 def delete():
-
+    
     form = DelForm()
 
     if form.validate_on_submit():
 
         id = form.id.data
         pup = Puppy.query.get(id)
+
+        if pup is None:
+            # Avoid crashing by not trying to delete a non-existent puppy
+            return render_template('delete.html', form=form, error="Puppy not found.")
+
         db.session.delete(pup)
         db.session.commit()
 
         return redirect(url_for('puppies.list'))
 
-    return render_template('delete.html',form=form)
+    return render_template('delete.html', form=form)
+
